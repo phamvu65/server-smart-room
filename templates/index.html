@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Classroom Dashboard</title>
+    <!-- Thêm Bootstrap CDN để tạo giao diện đẹp -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Thêm font Google để giao diện thêm hiện đại -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Kết nối với file CSS tùy chỉnh -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f8fb;
+            padding-top: 50px;
+        }
+        .container {
+            max-width: 900px;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #343a40;
+            color: #fff;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .alert {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .status-card {
+            margin-top: 30px;
+        }
+        .data-value {
+            font-size: 28px;
+            font-weight: 500;
+        }
+        .btn-update {
+            margin-top: 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+        }
+        .btn-update:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="text-center text-primary mb-5">Smart Classroom Dashboard</h1>
+
+    <!-- Card for Posture Status -->
+    <div class="card status-card">
+        <div class="card-header">
+            Posture Status
+        </div>
+        <div class="card-body">
+            <div id="postureStatus" class="alert">
+                <strong>Posture Status: </strong>
+                <span id="postureValue" class="text-warning">{{ posture.status }}</span>
+            </div>
+            <div id="neckDist">
+                <strong>Neck Distance: </strong>
+                <span id="neckDistValue" class="data-value">{{ posture.neckDist }} px</span>
+            </div>
+            <div id="postureTimestamp">
+                <strong>Last Update:</strong> <span id="postureTimestampValue">{{ posture.timestamp }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card for Environmental Data -->
+    <div class="card status-card mt-4">
+        <div class="card-header">
+            Environmental Data
+        </div>
+        <div class="card-body">
+            <p><strong>Temperature:</strong> <span id="temperature" class="data-value">{{ sensors.temperature }} °C</span></p>
+            <p><strong>Humidity:</strong> <span id="humidity" class="data-value">{{ sensors.humidity }} %</span></p>
+            <p><strong>Air Quality:</strong> <span id="airQuality" class="data-value">{{ sensors.airQuality }}</span></p>
+            <p><strong>Last Update:</strong> <span id="sensorTimestamp" class="text-muted">{{ sensors.timestamp }}</span></p>
+        </div>
+    </div>
+
+    <!-- Button to manually update data -->
+    <button class="btn-update btn-block" onclick="fetchData()">Update Data</button>
+</div>
+
+<!-- JavaScript to fetch and update data -->
+<script>
+    // Hàm cập nhật dữ liệu từ API
+    function fetchData() {
+        fetch('/api/v1/data')
+            .then(response => response.json())
+            .then(data => {
+                // Cập nhật trạng thái tư thế
+                document.getElementById('postureValue').textContent = data.posture.status;
+                document.getElementById('neckDistValue').textContent = data.posture.neckDist + ' px';
+                document.getElementById('postureTimestampValue').textContent = data.posture.timestamp;
+                
+                // Cập nhật dữ liệu cảm biến
+                document.getElementById('temperature').textContent = data.sensors.temperature + ' °C';
+                document.getElementById('humidity').textContent = data.sensors.humidity + ' %';
+                document.getElementById('airQuality').textContent = data.sensors.airQuality;
+                document.getElementById('sensorTimestamp').textContent = data.sensors.timestamp;
+
+                // Cập nhật màu sắc tư thế
+                const postureStatus = document.getElementById('postureStatus');
+                if (data.posture.status === 'GOOD') {
+                    postureStatus.className = 'alert alert-success';
+                } else {
+                    postureStatus.className = 'alert alert-danger';
+                }
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    }
+
+    // Cập nhật dữ liệu mỗi 2 giây
+    setInterval(fetchData, 2000);
+
+    // Lấy dữ liệu ngay khi tải trang
+    window.onload = fetchData;
+</script>
+
+</body>
+</html>

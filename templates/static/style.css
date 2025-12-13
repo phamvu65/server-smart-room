@@ -1,0 +1,33 @@
+body {
+    background-color: #f0f8ff;
+    font-family: Arial, sans-serif;
+}
+
+#postureStatus {
+    font-size: 2rem;
+    padding: 15px;
+    text-align: center;
+}
+
+#neckDist, #sensorData {
+    font-size: 1.5rem;
+    margin-top: 20px;
+}
+
+#lastUpdated {
+    font-size: 1.2rem;
+    color: #666;
+    margin-top: 30px;
+}
+
+.container {
+    max-width: 800px;
+    margin-top: 50px;
+}
+.card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 30px;
+}
