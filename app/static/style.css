@@ -1,0 +1,184 @@
+/* --- 1. CẤU HÌNH GIAO DIỆN CHUNG --- */
+:root {
+    --primary-color: #4e73df;
+    --success-color: #1cc88a;
+    --danger-color: #e74a3b;
+    --warning-color: #f6c23e;
+    --bg-color: #f8f9fc;
+    --card-bg: #ffffff;
+}
+
+html, body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-color);
+    min-height: 100vh;
+}
+
+body {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header */
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    background: white;
+    padding: 15px 25px;
+    border-radius: 15px;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+}
+.app-title {
+    color: #5a5c69;
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin: 0;
+}
+.live-badge {
+    background: #e74a3b;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    animation: pulse-red 2s infinite;
+    margin-right: 15px;
+    text-transform: uppercase;
+}
+
+/* --- 2. GRID SYSTEM (LƯỚI) - FIX LỖI CHIA CỘT TẠI ĐÂY --- */
+.dashboard-grid {
+    display: grid;
+    /* Dòng này chia cứng thành 2 cột đều nhau */
+    grid-template-columns: 1fr 1fr; 
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+/* --- 3. STYLE CHO CARD --- */
+.card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    border: none;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s;
+    overflow: hidden;
+}
+
+.card:hover { transform: translateY(-5px); }
+
+.card-header {
+    background: transparent;
+    border-bottom: 1px solid #f0f1f5;
+    font-weight: 700;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.1rem;
+}
+
+.card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+    text-align: center;
+}
+
+.big-data {
+    font-size: 2.8rem;
+    font-weight: 600;
+    color: #5a5c69;
+    line-height: 1.2;
+}
+
+.icon-header { font-size: 1.2rem; opacity: 0.8; }
+
+/* --- 4. CÁC CLASS ĐẶC BIỆT --- */
+
+/* Nút đèn */
+.btn-light-control {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: none;
+    font-size: 2.5rem;
+    color: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+    outline: none !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-off { background: #858796; }
+.btn-on { 
+    background: var(--warning-color); 
+    box-shadow: 0 0 25px rgba(246, 194, 62, 0.6); 
+    transform: scale(1.05);
+}
+.btn-light-control:active { transform: scale(0.95); }
+
+/* Hiệu ứng báo động đỏ */
+@keyframes pulse-red {
+    0% { box-shadow: 0 0 0 0 rgba(231, 74, 59, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(231, 74, 59, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(231, 74, 59, 0); }
+}
+
+.danger-mode {
+    background-color: #fff5f5 !important;
+    border: 2px solid var(--danger-color) !important;
+    animation: pulse-red 1.5s infinite;
+}
+
+.safe-badge, .danger-badge {
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.safe-badge {
+    background-color: #e6fffa;
+    color: var(--success-color);
+}
+
+.danger-badge {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+/* Table Lịch sử */
+.table-custom th {
+    border-top: none;
+    color: #4e73df;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+.table td { vertical-align: middle; }
+
+/* --- 5. RESPONSIVE --- */
+@media (max-width: 768px) {
+    .dashboard-grid { 
+        grid-template-columns: 1fr; /* Về 1 cột trên điện thoại */
+    }
+    .header-section { flex-direction: column; text-align: center; gap: 15px; }
+    .big-data { font-size: 2.2rem; }
+}
